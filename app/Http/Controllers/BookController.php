@@ -14,7 +14,6 @@ class BookController extends Controller
      */
     public function index()
     {
-        //
         $books=\App\Book::all();
         return view('index',compact('books'));
     }
@@ -26,7 +25,6 @@ class BookController extends Controller
      */
     public function create()
     {
-        //
         return view('create');
     }
 
@@ -38,15 +36,20 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $book = new \App\Book;
-        $book->title = $request->get('title');
-        $book->description = $request->get('description');
-        $book->qty = $request->get('qty');
-        $book->publisher = $request->get('publisher');
+        $book->books_title = $request->get('books_title');
+        $book->books_writer = $request->get('books_writer'); 
+        $book->books_description = $request->get('books_description');
+        $book->books_genre = $request->get('books_genre');
+        $book->books_language = $request->get('books_language');
+        $book->books_country = $request->get('books_country');
+        $book->books_publisher = $request->get('books_publisher');
+        $book->books_price = $request->get('books_price');
+        $book->books_qty = $request->get('books_qty');
+        $book->books_filename = $request->get('books_filename');
         $book->save();
         
-        return redirect('books')->with('success', 'Data buku telah ditambahkan');
+        return redirect('books/create')->with('success', 'Data buku telah ditambahkan');
     }
 
     /**
@@ -82,12 +85,17 @@ class BookController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
         $book = Book::where('id', $id)->first();
-        $book->title = $request->title;
-        $book->description = $request->description;
-        $book->qty = $request->qty;
-        $book->publisher = $request->publisher;
+        $book->books_title = $request->books_title;
+        $book->books_writer = $request->books_writer; 
+        $book->books_description = $request->books_description;
+        $book->books_genre = $request->books_genre;
+        $book->books_language = $request->books_language;
+        $book->books_country = $request->books_country;
+        $book->books_publisher = $request->books_publisher;
+        $book->books_price = $request->books_price;
+        $book->books_qty = $request->books_qty;
+        $book->books_filename = $request->books_filename;
         $book->save();
         return redirect()->route('books.index')->with('alert-success', 'Data berhasil diubah!');
     }
