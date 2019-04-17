@@ -36,7 +36,7 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $book = new \App\Book;
+        $book = new Book;
         $book->books_title = $request->get('books_title');
         $book->books_writer = $request->get('books_writer'); 
         $book->books_description = $request->get('books_description');
@@ -46,7 +46,11 @@ class BookController extends Controller
         $book->books_publisher = $request->get('books_publisher');
         $book->books_price = $request->get('books_price');
         $book->books_qty = $request->get('books_qty');
-        $book->books_filename = $request->get('books_filename');
+        $books_filepath = $request->file('books_filepath');
+        $ext = $books_filepath->getClientOriginalExtension();
+        $newName = rand(100000,1001238912).".".$ext;
+        $books_filepath->move('uploads/file',$newName);
+        $book->books_filepath = $newName;
         $book->save();
         
         return redirect('books/create')->with('success', 'Data buku telah ditambahkan');
@@ -69,10 +73,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($books_id)
     {
-        //
-        $books = Book::where('id', $id)->get();
+        $books = Book::where('books_id', $books_id)->get();
         return view('edit', compact('books'));
     }
 
@@ -83,9 +86,9 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $books_id)
     {
-        $book = Book::where('id', $id)->first();
+        $book = Book::where('books_id', $books_id)->first();
         $book->books_title = $request->books_title;
         $book->books_writer = $request->books_writer; 
         $book->books_description = $request->books_description;
@@ -95,7 +98,17 @@ class BookController extends Controller
         $book->books_publisher = $request->books_publisher;
         $book->books_price = $request->books_price;
         $book->books_qty = $request->books_qty;
-        $book->books_filename = $request->books_filename;
+        if (empty($request->file('books_filepath'))){
+            $book->books_filepath = $book->books_filepath;
+        }
+        else{
+            unlink('uploads/file/'.$book->books_filepath); //menghapus file lama
+            $books_filepath = $request->file('books_filepath');
+            $ext = $books_filepath->getClientOriginalExtension();
+            $newName = rand(100000,1001238912).".".$ext;
+            $books_filepath->move('uploads/file',$newName);
+            $book->books_filepath = $newName;
+        }
         $book->save();
         return redirect()->route('books.index')->with('alert-success', 'Data berhasil diubah!');
     }
@@ -106,10 +119,10 @@ class BookController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($books_id)
     {
         //
-        $book = Book::where('id', $id)->first();
+        $book = Book::where('books_id', $books_id)->first();
         $book->delete();
         return redirect()->route('books.index');
     }

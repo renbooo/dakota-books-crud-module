@@ -108,12 +108,18 @@
                           <label for="BookTitle">QTY</label>
                           <input type="text" name="books_qty" class="form-control" id="inputEmail4" placeholder="deskripsi buku">
                       </div>
-                      <div class="form-group col-md-6">
-                          <label for="BookWriter">Filename</label>
-                          <input type="text" name="books_filename" class="form-control" id="inputPassword4" placeholder="jenis buku">
-                      </div>
+                      <div class="input-group mb-3">
+                        <div class="custom-file">
+                            <input type="file" name="books_filepath" class="custom-file-input" id="inputGroupFile02">
+                            <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon02">Choose file</label>
+                        </div>
+                        <div class="input-group-append">
+                            <span class="input-group-text" id="inputGroupFileAddon02">Upload</span>
+                        </div>
+                    </div>
                   </div>
                   <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
               </form>
           </div>
       </div>

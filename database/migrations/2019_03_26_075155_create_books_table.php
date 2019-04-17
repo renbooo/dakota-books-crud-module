@@ -24,7 +24,7 @@ class CreateBooksTable extends Migration
             $table->string('books_publisher');
             $table->string('books_price');
             $table->integer('books_qty');
-            $table->string('books_filename');
+            $table->text('books_filepath');
             $table->timestamps();
         });
     }
